@@ -20,7 +20,8 @@ A single-page deployment helper for [Nostr CMS](https://github.com/bitkarrot/nos
 | `VITE_MASTER_PUBKEY` | Yes | Hex public key of the site owner/admin |
 | `VITE_REMOTE_NOSTR_JSON_URL` | Yes | URL to a `nostr.json` file for admin role mapping |
 | `VITE_DEFAULT_RELAY` | Yes | Primary Nostr relay (websocket URL starting with `wss://`) |
-| `VITE_SWARM_API_URL` | No | Swarm relay API URL for scheduled posts support |
+| `VITE_SWARM_API_URL` | No | Swarm relay API URL for scheduled posts support (auto-derives from `VITE_DEFAULT_RELAY` as `https://<relay-host>/api` if unset) |
+| `VITE_ENABLE_NSEC_LOGIN` | No | Set to `true` to show the nsec paste/import login option (hidden by default; NIP-07 extension and NIP-46 bunker logins are always available) |
 
 ### Validating Your Environment Variables
 

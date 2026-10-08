@@ -827,6 +827,14 @@ VITE_DEFAULT_RELAY="<span class="env-val">your-relay-here</span>"</code></pre>
                         <span>📋</span> Copy Environment Variables
                     </button>
                 </div>
+
+                <div class="warning" style="margin-top: 15px;">
+                    <strong>Optional environment variables:</strong>
+                    <ul style="margin-left: 18px; margin-top: 8px;">
+                        <li style="margin-bottom: 8px;"><code>VITE_ENABLE_NSEC_LOGIN=true</code> — shows the nsec (secret key) paste/import login option in the CMS. It is <strong>hidden by default</strong> for security. Set this only if admins need to log in with a raw nsec — extension (NIP-07) and bunker (NIP-46) logins always work without it.</li>
+                        <li><code>VITE_SWARM_API_URL</code> — only needed for the scheduled-posts feature when your Swarm API lives at a different URL than your relay (e.g., <code>https://swarm.example.com/api</code>). If unset, it auto-derives from <code>VITE_DEFAULT_RELAY</code> as <code>https://&lt;relay-host&gt;/api</code>. Requires a Swarm relay backend.</li>
+                    </ul>
+                </div>
             </div>
 
             <hr class="divider">
