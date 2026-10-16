@@ -24,7 +24,6 @@
 
     <title>Deploy Nostr CMS</title>
     <script src="https://unpkg.com/nostr-tools@2.10.4/lib/nostr.bundle.js"></script>
-    <script src="https://unpkg.com/nostr-login@latest/dist/unpkg.js" data-dark-mode="true" data-methods="extension,connect,readOnly" data-no-banner="true"></script>
     <style>
         * {
             margin: 0;
@@ -679,7 +678,7 @@
                     </div>
                     <div class="nostr-json-option" onclick="selectNostrJsonOption('swarm')">
                         <h4>🐝 Use Swarm Relay</h4>
-                        <p>Deploy a Swarm relay which includes a built-in nostr.json. Best for full-featured setups with scheduled posts.</p>
+                        <p>Deploy a Swarm relay which includes a built-in nostr.json and Blossom media server. Best for full-featured setups with scheduled posts.</p>
                     </div>
                 </div>
 
@@ -695,7 +694,7 @@
                 </div>
 
                 <div id="nostrJsonSwarmInfo" class="info hidden">
-                    <strong>Swarm Relay Option:</strong> The Swarm relay includes a built-in nostr.json and supports scheduled notes. Copy the prompt below and paste it into your AI assistant to deploy:
+                    <strong>Swarm Relay Option:</strong> The Swarm relay includes a built-in nostr.json and Blossom media server, and supports scheduled notes. Copy the prompt below and paste it into your AI assistant to deploy:
                     <div class="code-block">
                         <pre style="margin-top: 10px;"><code id="swarmDeployCode"></code></pre>
                         <button class="copy-button" onclick="copySwarmPrompt()" style="margin-top: 10px; padding: 8px 16px; font-size: 0.9em;">
@@ -750,6 +749,9 @@
                         <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
                         Login with Nostr
                     </button>
+                    <div id="noExtensionMsg" class="warning hidden" style="margin-top: 10px;">
+                        No Nostr extension detected. Install a NIP-07 signer (e.g. <a href="https://getalby.com" target="_blank">Alby</a> or nos2x) and reload, or paste your pubkey in the field below.
+                    </div>
                 </div>
 
                 <div id="loggedInSection" class="hidden logged-in-info">
@@ -1014,6 +1016,7 @@ VITE_DEFAULT_RELAY="<span class="env-val">your-relay-here</span>"</code></pre>
             const nostrLoginBtn = document.getElementById('nostrLoginBtn');
             const logoutBtn = document.getElementById('logoutBtn');
             const pubkeyInput = document.getElementById('masterPubkey');
+            const noExtensionMsg = document.getElementById('noExtensionMsg');
 
             // Initialize env codes
             onFieldChange();
@@ -1032,40 +1035,28 @@ VITE_DEFAULT_RELAY="<span class="env-val">your-relay-here</span>"</code></pre>
                 loggedInSection.classList.add('hidden');
                 loggedInNpub.textContent = '';
                 pubkeyInput.value = '';
+                noExtensionMsg.classList.add('hidden');
                 onFieldChange();
             }
 
             nostrLoginBtn.addEventListener('click', async () => {
-                // Prefer direct NIP-07 extension login
-                if (window.nostr && window.nostr.getPublicKey) {
-                    try {
-                        const hexPubkey = await window.nostr.getPublicKey();
-                        setLoggedIn(hexPubkey);
-                        return;
-                    } catch (err) {
-                        console.error('Extension login failed:', err);
-                    }
+                if (!window.nostr || !window.nostr.getPublicKey) {
+                    noExtensionMsg.classList.remove('hidden');
+                    return;
                 }
-                // Fall back to the nostr-login modal
-                document.dispatchEvent(new CustomEvent('nlLaunch', { detail: 'welcome' }));
+                try {
+                    const hexPubkey = await window.nostr.getPublicKey();
+                    noExtensionMsg.classList.add('hidden');
+                    setLoggedIn(hexPubkey);
+                } catch (err) {
+                    console.error('Extension login failed:', err);
+                    noExtensionMsg.classList.remove('hidden');
+                    noExtensionMsg.textContent = 'Extension login was rejected or failed. Try again, or paste your pubkey in the field below.';
+                }
             });
 
             logoutBtn.addEventListener('click', () => {
                 setLoggedOut();
-                document.dispatchEvent(new CustomEvent('nlLogout'));
-            });
-
-            document.addEventListener('nlAuth', async (e) => {
-                if (e.detail.type === 'login' || e.detail.type === 'signup') {
-                    try {
-                        const hexPubkey = await window.nostr.getPublicKey();
-                        setLoggedIn(hexPubkey);
-                    } catch (err) {
-                        console.error('Failed to get pubkey:', err);
-                    }
-                } else if (e.detail.type === 'logout') {
-                    setLoggedOut();
-                }
             });
         });
 
