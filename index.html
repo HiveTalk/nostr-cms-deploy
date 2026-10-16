@@ -349,6 +349,30 @@
             color: #fffbe6;
         }
 
+        details.collapsible {
+            background: #1d1e2f;
+            border: 1px solid #2d2e3e;
+            border-radius: 8px;
+            padding: 12px 15px;
+            margin: 15px 0;
+        }
+
+        body.light-mode details.collapsible {
+            background: rgba(110, 163, 193, 0.12);
+            border-color: #b0b8c1;
+        }
+
+        details.collapsible summary {
+            cursor: pointer;
+            font-weight: 600;
+            color: #bccdf0;
+            font-size: 0.92em;
+        }
+
+        body.light-mode details.collapsible summary {
+            color: #1a2238;
+        }
+
         .info {
             background: rgba(58, 91, 160, 0.15);
             border-left: 4px solid #6ea3c1;
@@ -781,46 +805,50 @@
                     </a>
                 </div>
 
-                <div class="info" style="margin-top: 20px;">
-                    <strong>Instructions:</strong>
-                    <ol style="margin-left: 18px; margin-top: 8px;">
-                        <li>Click the Deploy button above</li>
-                        <li>Add the 3 environment variables from above:
-                            <ul style="margin-left: 18px; margin-top: 4px;">
-                                <li><code>VITE_MASTER_PUBKEY</code></li>
-                                <li><code>VITE_REMOTE_NOSTR_JSON_URL</code></li>
-                                <li><code>VITE_DEFAULT_RELAY</code></li>
-                            </ul>
-                        </li>
-                        <li>Deploy! If you update variables, redeploy to apply changes.</li>
-                    </ol>
-                </div>
-
-                <div class="code-block">
-                    <strong>Environment Variables to Copy:</strong>
-                    <pre style="margin-top: 10px;"><code id="vercelEnvCode">VITE_MASTER_PUBKEY="<span class="env-val">your-pubkey-here</span>"
-VITE_REMOTE_NOSTR_JSON_URL="<span class="env-val">your-nostr-json-url-here</span>"
-VITE_DEFAULT_RELAY="<span class="env-val">your-relay-here</span>"</code></pre>
-                    <button class="copy-button" onclick="copyVercelEnv()" style="margin-top: 10px; padding: 8px 16px; font-size: 0.9em;">
-                        <span>📋</span> Copy Environment Variables
-                    </button>
-                </div>
-
-                <div class="warning" style="margin-top: 15px;">
-                    <strong>Optional environment variables:</strong>
-                    <ul style="margin-left: 18px; margin-top: 8px;">
-                        <li style="margin-bottom: 8px;"><code>VITE_ENABLE_NSEC_LOGIN=true</code> — shows the nsec (secret key) paste/import login option in the CMS. It is <strong>hidden by default</strong> for security. Set this only if admins need to log in with a raw nsec — extension (NIP-07) and bunker (NIP-46) logins always work without it.</li>
-                        <li><code>VITE_SWARM_API_URL</code> — only needed for the scheduled-posts feature when your Swarm API lives at a different URL than your relay (e.g., <code>https://swarm.example.com/api</code>). If unset, it auto-derives from <code>VITE_DEFAULT_RELAY</code> as <code>https://&lt;relay-host&gt;/api</code>. Requires a Swarm relay backend.</li>
-                    </ul>
-                </div>
-
-                <div class="code-block" style="margin-top: 15px;">
-                    <strong>Or paste this prompt into an AI assistant to deploy for you:</strong>
+                <div class="code-block" style="margin-top: 20px;">
+                    <strong>Paste this prompt into an AI assistant to deploy for you:</strong>
                     <pre style="margin-top: 10px;"><code id="cmsDeployCode"></code></pre>
                     <button class="copy-button" onclick="copyCmsPrompt()" style="margin-top: 10px; padding: 8px 16px; font-size: 0.9em;">
                         📋 Copy Deploy Prompt
                     </button>
                 </div>
+
+                <details class="collapsible">
+                    <summary>Manual setup — click to expand instructions &amp; environment variables</summary>
+
+                    <div class="info" style="margin-top: 15px;">
+                        <strong>Instructions:</strong>
+                        <ol style="margin-left: 18px; margin-top: 8px;">
+                            <li>Click the Deploy button above</li>
+                            <li>Add the 3 environment variables from above:
+                                <ul style="margin-left: 18px; margin-top: 4px;">
+                                    <li><code>VITE_MASTER_PUBKEY</code></li>
+                                    <li><code>VITE_REMOTE_NOSTR_JSON_URL</code></li>
+                                    <li><code>VITE_DEFAULT_RELAY</code></li>
+                                </ul>
+                            </li>
+                            <li>Deploy! If you update variables, redeploy to apply changes.</li>
+                        </ol>
+                    </div>
+
+                    <div class="code-block">
+                        <strong>Environment Variables to Copy:</strong>
+                        <pre style="margin-top: 10px;"><code id="vercelEnvCode">VITE_MASTER_PUBKEY="<span class="env-val">your-pubkey-here</span>"
+VITE_REMOTE_NOSTR_JSON_URL="<span class="env-val">your-nostr-json-url-here</span>"
+VITE_DEFAULT_RELAY="<span class="env-val">your-relay-here</span>"</code></pre>
+                        <button class="copy-button" onclick="copyVercelEnv()" style="margin-top: 10px; padding: 8px 16px; font-size: 0.9em;">
+                            <span>📋</span> Copy Environment Variables
+                        </button>
+                    </div>
+
+                    <div class="warning" style="margin-top: 15px;">
+                        <strong>Optional environment variables:</strong>
+                        <ul style="margin-left: 18px; margin-top: 8px;">
+                            <li style="margin-bottom: 8px;"><code>VITE_ENABLE_NSEC_LOGIN=true</code> — shows the nsec (secret key) paste/import login option in the CMS. It is <strong>hidden by default</strong> for security. Set this only if admins need to log in with a raw nsec — extension (NIP-07) and bunker (NIP-46) logins always work without it.</li>
+                            <li><code>VITE_SWARM_API_URL</code> — only needed for the scheduled-posts feature when your Swarm API lives at a different URL than your relay (e.g., <code>https://swarm.example.com/api</code>). If unset, it auto-derives from <code>VITE_DEFAULT_RELAY</code> as <code>https://&lt;relay-host&gt;/api</code>. Requires a Swarm relay backend.</li>
+                        </ul>
+                    </div>
+                </details>
             </div>
 
         </div>
@@ -990,11 +1018,40 @@ VITE_DEFAULT_RELAY="<span class="env-val">your-relay-here</span>"</code></pre>
             // Initialize env codes
             onFieldChange();
 
-            nostrLoginBtn.addEventListener('click', () => {
+            function setLoggedIn(hexPubkey) {
+                const npub = NostrTools.nip19.npubEncode(hexPubkey);
+                loginSection.classList.add('hidden');
+                loggedInSection.classList.remove('hidden');
+                loggedInNpub.textContent = npub.slice(0, 12) + '...' + npub.slice(-8);
+                pubkeyInput.value = npub;
+                onFieldChange();
+            }
+
+            function setLoggedOut() {
+                loginSection.classList.remove('hidden');
+                loggedInSection.classList.add('hidden');
+                loggedInNpub.textContent = '';
+                pubkeyInput.value = '';
+                onFieldChange();
+            }
+
+            nostrLoginBtn.addEventListener('click', async () => {
+                // Prefer direct NIP-07 extension login
+                if (window.nostr && window.nostr.getPublicKey) {
+                    try {
+                        const hexPubkey = await window.nostr.getPublicKey();
+                        setLoggedIn(hexPubkey);
+                        return;
+                    } catch (err) {
+                        console.error('Extension login failed:', err);
+                    }
+                }
+                // Fall back to the nostr-login modal
                 document.dispatchEvent(new CustomEvent('nlLaunch', { detail: 'welcome' }));
             });
 
             logoutBtn.addEventListener('click', () => {
+                setLoggedOut();
                 document.dispatchEvent(new CustomEvent('nlLogout'));
             });
 
@@ -1002,23 +1059,12 @@ VITE_DEFAULT_RELAY="<span class="env-val">your-relay-here</span>"</code></pre>
                 if (e.detail.type === 'login' || e.detail.type === 'signup') {
                     try {
                         const hexPubkey = await window.nostr.getPublicKey();
-                        const npub = NostrTools.nip19.npubEncode(hexPubkey);
-
-                        loginSection.classList.add('hidden');
-                        loggedInSection.classList.remove('hidden');
-                        loggedInNpub.textContent = npub.slice(0, 12) + '...' + npub.slice(-8);
-
-                        pubkeyInput.value = npub;
-                        onFieldChange();
+                        setLoggedIn(hexPubkey);
                     } catch (err) {
                         console.error('Failed to get pubkey:', err);
                     }
                 } else if (e.detail.type === 'logout') {
-                    loginSection.classList.remove('hidden');
-                    loggedInSection.classList.add('hidden');
-                    loggedInNpub.textContent = '';
-                    pubkeyInput.value = '';
-                    onFieldChange();
+                    setLoggedOut();
                 }
             });
         });
