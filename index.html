@@ -661,6 +661,13 @@
 
                 <div id="nostrJsonForkInfo" class="info hidden">
                     <strong>Fork Option:</strong> Fork <a href="https://github.com/bitkarrot/nip05-service" target="_blank">bitkarrot/nip05-service</a> on GitHub. Your nostr.json URL will be: <code>https://yourusername.github.io/nip05-service/.well-known/nostr.json</code>
+                    <p style="margin-top: 10px;">Alternatively, deploy your fork to Vercel — the repo already ships a <code>vercel.json</code> and a serverless registration API. Your nostr.json URL becomes <code>https://your-project.vercel.app/.well-known/nostr.json</code>. Copy the prompt below and paste it into your AI assistant to deploy:</p>
+                    <div class="code-block">
+                        <pre style="margin-top: 10px;"><code id="forkDeployCode"></code></pre>
+                        <button class="copy-button" onclick="copyForkPrompt()" style="margin-top: 10px; padding: 8px 16px; font-size: 0.9em;">
+                            📋 Copy Deploy Prompt
+                        </button>
+                    </div>
                 </div>
 
                 <div id="nostrJsonSwarmInfo" class="info hidden">
@@ -916,6 +923,21 @@ VITE_DEFAULT_RELAY="<span class="env-val">your-relay-here</span>"</code></pre>
                 `This is a Docker deployment. The relay includes a built-in nostr.json served at /.well-known/nostr.json and supports scheduled notes.\n\n` +
                 `Set the following environment variable:\n\n` +
                 `RELAY_PUBKEY="<span class="env-val">${displayPubkey}</span>"`;
+
+            // Fork (nip05-service) deploy prompt
+            document.getElementById('forkDeployCode').innerHTML =
+                `Fork https://github.com/bitkarrot/nip05-service and deploy the fork to Vercel.\n\n` +
+                `The repo is already Vercel-ready: vercel.json serves /.well-known/nostr.json with Content-Type: application/json and Access-Control-Allow-Origin: *, and api/submit-nip05.js is a serverless function that opens PRs to update nostr.json.\n\n` +
+                `Steps:\n` +
+                `1. Fork the repo to my GitHub account, then import the fork at https://vercel.com/new and deploy with default settings (static site, no build command needed).\n` +
+                `2. Set these environment variables in the Vercel project:\n` +
+                `   GITHUB_TOKEN="<fine-grained GitHub PAT scoped to the fork with Actions, Contents, and Pull requests read/write>"\n` +
+                `   GITHUB_OWNER="<my-github-username>"\n` +
+                `   GITHUB_REPO="nip05-service"\n` +
+                `3. In the fork on GitHub: Settings → Actions → General → Workflow permissions → select "Read and write permissions" and check "Allow GitHub Actions to create and approve pull requests".\n` +
+                `4. Update .well-known/nostr.json so "names" maps my identifier to my pubkey, e.g.:\n` +
+                `   "_": "<span class="env-val">${displayPubkey}</span>"\n` +
+                `5. Redeploy on Vercel. My nostr.json URL will be https://<project>.vercel.app/.well-known/nostr.json — use it as VITE_REMOTE_NOSTR_JSON_URL in the CMS.`;
         }
 
         // Nostr JSON option selection
@@ -1010,6 +1032,22 @@ VITE_DEFAULT_RELAY="${relayInput.value.trim() || 'your-relay-here'}"`;
                 document.execCommand('copy');
                 document.body.removeChild(textarea);
                 alert('Environment variables copied!');
+            });
+        }
+
+        function copyForkPrompt() {
+            const code = document.getElementById('forkDeployCode').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                alert('Deployment prompt copied!');
+            }).catch(() => {
+                // Fallback
+                const textarea = document.createElement('textarea');
+                textarea.value = code;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                alert('Deployment prompt copied!');
             });
         }
 
