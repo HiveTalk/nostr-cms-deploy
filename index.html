@@ -558,40 +558,6 @@
             color: #3a5ba0;
         }
 
-        /* Experimental Section */
-        .experimental-section {
-            background: linear-gradient(135deg, rgba(255, 224, 102, 0.1) 0%, rgba(160, 74, 108, 0.1) 100%);
-            border: 2px dashed #ffe066;
-            border-radius: 12px;
-            padding: 24px;
-            margin: 30px 0;
-        }
-
-        .experimental-badge {
-            display: inline-block;
-            background: #ffe066;
-            color: #1a2238;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.75em;
-            font-weight: 700;
-            margin-bottom: 12px;
-        }
-
-        .experimental-section h3 {
-            color: #ffe066;
-            margin-bottom: 10px;
-        }
-
-        body.light-mode .experimental-section {
-            background: linear-gradient(135deg, rgba(247, 200, 115, 0.2) 0%, rgba(160, 74, 108, 0.1) 100%);
-            border-color: #f7c873;
-        }
-
-        body.light-mode .experimental-section h3 {
-            color: #1a2238;
-        }
-
         /* Relay Options */
         .relay-info {
             background: rgba(58, 91, 160, 0.1);
@@ -698,8 +664,13 @@
                 </div>
 
                 <div id="nostrJsonSwarmInfo" class="info hidden">
-                    <strong>Swarm Relay Option:</strong> The Swarm relay includes a built-in nostr.json and supports scheduled notes.<br>
-                    <a href="https://oneshot.hivetalk.org" target="_blank" style="display: inline-block; margin-top: 10px; font-size: 1.2em; font-weight: 700; color: #ffe066; text-decoration: underline; text-underline-offset: 4px;">🚀 DEPLOY SWARM RELAY →</a>
+                    <strong>Swarm Relay Option:</strong> The Swarm relay includes a built-in nostr.json and supports scheduled notes. Copy the prompt below and paste it into your AI assistant to deploy:
+                    <div class="code-block">
+                        <pre style="margin-top: 10px;"><code id="swarmDeployCode"></code></pre>
+                        <button class="copy-button" onclick="copySwarmPrompt()" style="margin-top: 10px; padding: 8px 16px; font-size: 0.9em;">
+                            📋 Copy Deploy Prompt
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -837,35 +808,6 @@ VITE_DEFAULT_RELAY="<span class="env-val">your-relay-here</span>"</code></pre>
                 </div>
             </div>
 
-            <hr class="divider">
-
-            <!-- Experimental All-in-One -->
-            <div class="experimental-section">
-                <div style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;" onclick="toggleExperimental()">
-                    <div>
-                    <span class="experimental-badge">⚠️ EXPERIMENTAL</span>
-                    <h3 style="display: inline; margin-left: 10px;">All-in-One: CMS + Swarm Relay</h3>
-                    </div>
-                    <span id="experimentalArrow" style="font-size: 1.5em; color: #ffe066;">▼</span>
-                </div>
-
-                <div id="experimentalContent" style="display: none; margin-top: 15px;">
-                    <p style="margin-bottom: 12px;">Deploy CMS integrated with Swarm relay. Nostr.json managed via <code>/dashboard</code> after deployment.</p>
-
-                    <div class="code-block">
-                        <pre style="margin-top: 10px;"><code id="allInOneCode">Deploy https://github.com/HiveTalk/swarm/tree/cms-integration
-
-Set: RELAY_PUBKEY="<span class="env-val">your-hex-pubkey-here</span>"
-VITE_MASTER_PUBKEY="<span class="env-val">your-hex-pubkey-here</span>"
-VITE_REMOTE_NOSTR_JSON_URL="<span class="env-val">your-nostr-json-url-here</span>"
-VITE_DEFAULT_RELAY="<span class="env-val">your-relay-here</span>"</code></pre>
-                        <button class="copy-button" onclick="copyAllInOnePrompt()" style="margin-top: 10px; padding: 8px 16px; font-size: 0.9em;">
-                            📋 Copy
-                        </button>
-                    </div>
-                </div>
-            </div>
-
         </div>
 
         <footer>
@@ -968,15 +910,12 @@ VITE_DEFAULT_RELAY="<span class="env-val">your-relay-here</span>"</code></pre>
                 `VITE_REMOTE_NOSTR_JSON_URL="<span class="env-val">${displayJsonUrl}</span>"\n` +
                 `VITE_DEFAULT_RELAY="<span class="env-val">${displayRelay}</span>"`;
 
-            // All-in-One deploy code (relay + CMS variables)
-            document.getElementById('allInOneCode').innerHTML =
-                `Deploy this repository https://github.com/HiveTalk/swarm/tree/cms-integration\n\n` +
-                `Use the cms-integration branch. This is a Docker deployment.\n\n` +
-                `Set the following environment variables:\n\n` +
-                `RELAY_PUBKEY="<span class="env-val">${displayPubkey}</span>"\n` +
-                `VITE_MASTER_PUBKEY="<span class="env-val">${displayPubkey}</span>"\n` +
-                `VITE_REMOTE_NOSTR_JSON_URL="<span class="env-val">${displayJsonUrl}</span>"\n` +
-                `VITE_DEFAULT_RELAY="<span class="env-val">${displayRelay}</span>"`;
+            // Swarm relay deploy prompt
+            document.getElementById('swarmDeployCode').innerHTML =
+                `Deploy the Swarm Nostr relay: https://github.com/HiveTalk/swarm\n\n` +
+                `This is a Docker deployment. The relay includes a built-in nostr.json served at /.well-known/nostr.json and supports scheduled notes.\n\n` +
+                `Set the following environment variable:\n\n` +
+                `RELAY_PUBKEY="<span class="env-val">${displayPubkey}</span>"`;
         }
 
         // Nostr JSON option selection
@@ -1074,8 +1013,8 @@ VITE_DEFAULT_RELAY="${relayInput.value.trim() || 'your-relay-here'}"`;
             });
         }
 
-        function copyAllInOnePrompt() {
-            const code = document.getElementById('allInOneCode').textContent;
+        function copySwarmPrompt() {
+            const code = document.getElementById('swarmDeployCode').textContent;
             navigator.clipboard.writeText(code).then(() => {
                 alert('Deployment prompt copied!');
             }).catch(() => {
@@ -1115,18 +1054,6 @@ VITE_DEFAULT_RELAY="${relayInput.value.trim() || 'your-relay-here'}"`;
                 themeIcon.textContent = '🌙';
             }
         });
-
-        function toggleExperimental() {
-            const content = document.getElementById('experimentalContent');
-            const arrow = document.getElementById('experimentalArrow');
-            if (content.style.display === 'none') {
-                content.style.display = 'block';
-                arrow.textContent = '▲';
-            } else {
-                content.style.display = 'none';
-                arrow.textContent = '▼';
-            }
-        }
     </script>
 </body>
 </html>
