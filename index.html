@@ -218,48 +218,6 @@
             color: #b0b8c1;
         }
 
-        .login-btn {
-            background: #3a5ba0;
-            color: #ffe066;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.95em;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: transform 0.2s, opacity 0.2s;
-        }
-
-        .login-btn:hover {
-            opacity: 0.9;
-            transform: scale(1.02);
-        }
-
-        .logged-in-info {
-            background: rgba(188, 205, 240, 0.1);
-            border: 1px solid rgba(188, 205, 240, 0.3);
-            padding: 12px 14px;
-            border-radius: 6px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 0.88em;
-        }
-
-        .logout-link {
-            color: #7a88a1;
-            text-decoration: underline;
-            cursor: pointer;
-            font-size: 0.9em;
-        }
-
-        .logout-link:hover {
-            color: #e6eaf3;
-        }
-
         .hidden {
             display: none !important;
         }
@@ -742,33 +700,16 @@
                     <span class="step-number">3</span>
                     <h2>Set Master Public Key</h2>
                 </div>
-                <p style="margin-bottom: 12px;">Login with Nostr to automatically set your public key, or paste it manually.</p>
+                <p style="margin-bottom: 12px;">Paste your Nostr public key (npub or hex) below.</p>
 
-                <div id="loginSection">
-                    <button type="button" id="nostrLoginBtn" class="login-btn">
-                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
-                        Login with Nostr
-                    </button>
-                    <div id="noExtensionMsg" class="warning hidden" style="margin-top: 10px;">
-                        No Nostr extension detected. Install a NIP-07 signer (e.g. <a href="https://getalby.com" target="_blank">Alby</a> or nos2x) and reload, or paste your pubkey in the field below.
-                    </div>
-                </div>
-
-                <div id="loggedInSection" class="hidden logged-in-info">
-                    <div>
-                        <span style="color: #6ea3c1;">✓</span> Logged in as: <span id="loggedInNpub" style="font-family: monospace;"></span>
-                    </div>
-                    <span id="logoutBtn" class="logout-link">Logout</span>
-                </div>
-
-                <div class="input-group" style="margin-top: 12px;">
+                <div class="input-group">
                     <div class="field-status">
                         <label for="masterPubkey">VITE_MASTER_PUBKEY</label>
                         <span id="pubkeyStatus" class="status-indicator status-missing"><span class="status-dot"></span> Required</span>
                     </div>
                     <input type="text" id="masterPubkey" class="input-field" placeholder="npub1... or 64-character hex pubkey" oninput="onFieldChange()">
                     <div id="hexHint" class="hex-hint hidden">HEX: <span id="hexValue" style="color: #bccdf0;"></span></div>
-                    <div class="hint">The owner/admin pubkey for the CMS. Login with Nostr above to auto-fill.</div>
+                    <div class="hint">The owner/admin pubkey for the CMS.</div>
                 </div>
             </div>
 
@@ -1009,56 +950,8 @@ VITE_DEFAULT_RELAY="<span class="env-val">your-relay-here</span>"</code></pre>
             }
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const loginSection = document.getElementById('loginSection');
-            const loggedInSection = document.getElementById('loggedInSection');
-            const loggedInNpub = document.getElementById('loggedInNpub');
-            const nostrLoginBtn = document.getElementById('nostrLoginBtn');
-            const logoutBtn = document.getElementById('logoutBtn');
-            const pubkeyInput = document.getElementById('masterPubkey');
-            const noExtensionMsg = document.getElementById('noExtensionMsg');
-
-            // Initialize env codes
-            onFieldChange();
-
-            function setLoggedIn(hexPubkey) {
-                const npub = NostrTools.nip19.npubEncode(hexPubkey);
-                loginSection.classList.add('hidden');
-                loggedInSection.classList.remove('hidden');
-                loggedInNpub.textContent = npub.slice(0, 12) + '...' + npub.slice(-8);
-                pubkeyInput.value = npub;
-                onFieldChange();
-            }
-
-            function setLoggedOut() {
-                loginSection.classList.remove('hidden');
-                loggedInSection.classList.add('hidden');
-                loggedInNpub.textContent = '';
-                pubkeyInput.value = '';
-                noExtensionMsg.classList.add('hidden');
-                onFieldChange();
-            }
-
-            nostrLoginBtn.addEventListener('click', async () => {
-                if (!window.nostr || !window.nostr.getPublicKey) {
-                    noExtensionMsg.classList.remove('hidden');
-                    return;
-                }
-                try {
-                    const hexPubkey = await window.nostr.getPublicKey();
-                    noExtensionMsg.classList.add('hidden');
-                    setLoggedIn(hexPubkey);
-                } catch (err) {
-                    console.error('Extension login failed:', err);
-                    noExtensionMsg.classList.remove('hidden');
-                    noExtensionMsg.textContent = 'Extension login was rejected or failed. Try again, or paste your pubkey in the field below.';
-                }
-            });
-
-            logoutBtn.addEventListener('click', () => {
-                setLoggedOut();
-            });
-        });
+        // Initialize env codes
+        onFieldChange();
 
         // Copy functions
         function copyVercelEnv() {
