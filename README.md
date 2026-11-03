@@ -1,6 +1,6 @@
 # Nostr CMS Deploy
 
-A single-page deployment helper for [Nostr CMS](https://github.com/HiveTalk/nostr-cms). It provides an interactive form that collects the required environment variables and generates a ready-to-paste deployment prompt for [Zeabur](https://zeabur.com).
+A single-page deployment helper for [Nostr CMS](https://github.com/HiveTalk/nostr-cms). It provides an interactive form that collects the required environment variables and generates a ready-to-paste deployment prompt for LLMs.
 
 ## What It Does
 
@@ -11,7 +11,7 @@ A single-page deployment helper for [Nostr CMS](https://github.com/HiveTalk/nost
 
 2. **Nostr Login integration** — users can log in with a Nostr extension (NIP-07) or Nostr Connect to auto-fill their public key.
 
-3. **Generates a deploy prompt** — produces a text block that can be copied and pasted into Zeabur's AI assistant to deploy the Nostr CMS with the configured environment variables.
+3. **Generates a deploy prompt** — produces a text block that can be copied and pasted into any AI assistant to deploy the Nostr CMS with the configured environment variables.
 
 ## Environment Variables
 
@@ -69,7 +69,7 @@ nostr-cms-deploy/
 2. Log in with Nostr or manually enter your public key.
 3. Enter your `nostr.json` URL and default relay.
 4. Copy the generated deployment prompt.
-5. Paste it into [Zeabur's AI assistant](https://zeabur.com) to deploy your Nostr CMS instance.
+5. Paste it into any AI assistant to deploy your Nostr CMS instance.
 
 ## Dependencies
 
