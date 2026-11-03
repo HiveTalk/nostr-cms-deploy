@@ -1,6 +1,6 @@
 # Nostr CMS Deploy
 
-A single-page deployment helper for [Nostr CMS](https://github.com/bitkarrot/nostr-cms). It provides an interactive form that collects the required environment variables and generates a ready-to-paste deployment prompt for [Zeabur](https://zeabur.com).
+A single-page deployment helper for [Nostr CMS](https://github.com/HiveTalk/nostr-cms). It provides an interactive form that collects the required environment variables and generates a ready-to-paste deployment prompt for [Zeabur](https://zeabur.com).
 
 ## What It Does
 
@@ -80,4 +80,4 @@ This is a standalone HTML page with no build step. It loads two external scripts
 
 ## License
 
-See the [Nostr CMS repository](https://github.com/bitkarrot/nostr-cms) for license details.
+See the [Nostr CMS repository](https://github.com/HiveTalk/nostr-cms) for license details.
