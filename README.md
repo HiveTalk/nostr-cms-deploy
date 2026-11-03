@@ -73,10 +73,7 @@ nostr-cms-deploy/
 
 ## Dependencies
 
-This is a standalone HTML page with no build step. It loads two external scripts from CDN:
-
-- [nostr-tools](https://github.com/nbd-wtf/nostr-tools) — for npub/hex key conversion (NIP-19)
-- [nostr-login](https://github.com/nicefacer/nostr-login) — for Nostr extension and Nostr Connect authentication
+This is a standalone HTML page with no build step. 
 
 ## License
 
